@@ -1,0 +1,34 @@
+name: Update Kaggle Hourly
+
+on:
+  schedule:
+    - cron: '0 */1 * * *'  # Runs every 4 hours at 00, 04, 08, 12, 16, and 20 UTC
+  workflow_dispatch:  # ✅ Enables manual trigger
+
+jobs:
+  get_and_upload_crypto_data:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3  # Updated to v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Set up Google Cloud credentials
+      uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' # Replace with the name of your GitHub Actions secret
+
+    - name: Run update script
+      env:
+        KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+        KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+      run: |
+        jupyter nbconvert --to notebook --execute reddit-api-scraper.ipynb --inplace
