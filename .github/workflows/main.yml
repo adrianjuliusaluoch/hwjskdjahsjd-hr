@@ -2,7 +2,7 @@ name: Update Kaggle Hourly
 
 on:
   schedule:
-    - cron: '0 */1 * * *'  # Runs every 4 hours at 00, 04, 08, 12, 16, and 20 UTC
+    - cron: '0 */1 * * *'  # Runs every hour
   workflow_dispatch:  # ✅ Enables manual trigger
 
 jobs:
@@ -27,8 +27,11 @@ jobs:
         credentials_json: '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' # Replace with the name of your GitHub Actions secret
 
     - name: Run update script
-      env:
-        KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-        KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
       run: |
-        jupyter nbconvert --to notebook --execute export.ipynb --inplace
+        python export.py
+
+    - name: Update Kaggle Dataset
+      env:
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+      run: kaggle datasets version -p storage -m "Automatic Update"
