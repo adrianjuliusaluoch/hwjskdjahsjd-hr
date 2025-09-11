@@ -31,4 +31,4 @@ jobs:
         KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
         KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
       run: |
-        jupyter nbconvert --to notebook --execute reddit-api-scraper.ipynb --inplace
+        jupyter nbconvert --to notebook --execute export.ipynb --inplace
