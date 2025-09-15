@@ -12,7 +12,6 @@ query = """
     ORDER BY timestamp DESC
 """
 crypto = client.query(query).to_dataframe()
-crypto.to_csv("storage/cryptocurrency.csv", index=False)
 
 # Define SQL Query to Retrieve Stocks Data
 query = """
@@ -21,4 +20,6 @@ query = """
     ORDER BY timestamp DESC
 """
 stocks = client.query(query).to_dataframe()
-stocks.to_csv("storage/stocks.csv", index=False)
+
+crypto.to_csv("storage/cryptocurrency.csv", index=False, encoding='utf-8')
+stocks.to_csv("storage/stocks.csv", index=False, encoding='utf-8')
