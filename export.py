@@ -24,16 +24,5 @@ sql = (f"""
 
 crypto = client.query(sql).to_dataframe()
 
-# Define Table ID
-table_id = f"data-storage-485106.investing.stocks_{table_suffix}"
-
-# Define SQL Query to Retrieve All Records from BigQuery
-sql = (f"""
-        SELECT *
-        FROM `{table_id}`
-       """)
-
-stocks = client.query(sql).to_dataframe()
-
+# Save to CSV
 crypto.to_csv("storage/cryptocurrency.csv", index=False, encoding='utf-8')
-stocks.to_csv("storage/stocks.csv", index=False, encoding='utf-8')
